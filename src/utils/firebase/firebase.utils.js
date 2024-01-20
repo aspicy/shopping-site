@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+
 import { 
     getAuth, 
     signInWithRedirect, 
@@ -14,7 +15,11 @@ import {
     getFirestore, 
     doc, 
     getDoc, 
-    setDoc 
+    setDoc,
+    collection,
+    writeBatch,
+    query,
+    getDocs
 } from 'firebase/firestore';
 
 
@@ -43,7 +48,52 @@ export const signInWithGooglePopup = () =>
 export const signInWithGoogleRedirect = () => 
     signInWithRedirect(auth, googleProvider);
 
+// Initialize Firestore
 export const db = getFirestore();
+
+// upload data to firestore database
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    // get collection reference
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+
+    objectsToAdd.forEach((object) => {
+        const docRef = doc(collectionRef, object.title.toLowerCase());
+        batch.set(docRef, object);
+    });
+
+    await batch.commit();
+    console.log('Done');
+}
+
+// get the data from firestore database
+export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, 'categories');
+
+    // can also be done using getDocs(collectionRef). so query() will not be required to fetch all data
+    // query(collectionRef, condition) allow to pass a condition to get specific data
+    const q = query(collectionRef);
+
+    const querySnapshot = await getDocs(q);
+    const categoryMap = querySnapshot.docs.reduce((acc ,docSnapshot) => {
+        const { title, items } = docSnapshot.data();
+        acc[title.toLowerCase()] = items;
+        return acc;
+    }, {});
+
+    return categoryMap;
+};
+
+// getCategoriesAndDocuments will return an object which will look like this:
+// {
+//     title: {
+//         items
+//     },
+//     title: {
+//         items
+//     },
+//     ...
+// }
 
 export const createUserDocumentFromAuth = async (
     userAuth, 
