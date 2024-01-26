@@ -71,29 +71,13 @@ export const getCategoriesAndDocuments = async () => {
     const collectionRef = collection(db, 'categories');
 
     // can also be done using getDocs(collectionRef). so query() will not be required to fetch all data
-    // query(collectionRef, condition) allow to pass a condition to get specific data
+    // query(collectionRef, where(condition)) allow to pass a condition to get specific data
     const q = query(collectionRef);
 
     const querySnapshot = await getDocs(q);
-    const categoryMap = querySnapshot.docs.reduce((acc ,docSnapshot) => {
-        const { title, items } = docSnapshot.data();
-        acc[title.toLowerCase()] = items;
-        return acc;
-    }, {});
-
-    return categoryMap;
+    // Just getting the data. Data will be transformed in categories selector
+    return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
 };
-
-// getCategoriesAndDocuments will return an object which will look like this:
-// {
-//     title: {
-//         items
-//     },
-//     title: {
-//         items
-//     },
-//     ...
-// }
 
 export const createUserDocumentFromAuth = async (
     userAuth, 
