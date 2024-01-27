@@ -19,12 +19,8 @@ export const selectCategoriesMap = createSelector(
 
 // This will transform categories data fetched from firebase into this object:
 // {
-//     title: [
-//         items
-//     ],
-//     title: [
-//         items
-//     ],
+//     title: [items],
+//     title: [ items],
 //     ...
 // }
 
