@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ProductCartContainer = styled.div`
+export const ProductCardContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -31,6 +31,7 @@ export const ProductCartContainer = styled.div`
     button {
       opacity: 0.85;
       display: flex;
+      font-size: 12px;
     }
   }
 `;
