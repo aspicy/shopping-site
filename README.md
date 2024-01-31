@@ -9,8 +9,10 @@ Currently, two official plugins are available:
 
 
 Create ".env" file in root directory with the following Stripe environment variables and enter the keys as strings:
-VITE_STRIPE_PUBLISHABLE_KEY=""
-STRIPE_SECRET_KEY=""
+`VITE_STRIPE_PUBLISHABLE_KEY=""`
+
+`STRIPE_SECRET_KEY=""`
 
 This will help test payments in netlify-cli.
+
 Run: `netlify dev`
